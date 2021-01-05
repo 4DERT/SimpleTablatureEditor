@@ -4,7 +4,7 @@ import guitarpro
 from midiutil import MIDIFile
 
 # settings
-FILE = 'Orion.gp5'
+FILE = 'GuitarProFiles/Orion.gp5'
 SELECTED_TRACK = 0 # "J. Hetfield (Rhythm)"
 MEASURE_START = 53
 MEASURE_STOP = 76

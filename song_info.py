@@ -2,9 +2,9 @@
 
 import guitarpro
 
-file = 'Orion.gp5'
-# file = 'Stairway to Heaven.gp5'
-# file = 'Deutschland.gp5'
+file = 'GuitarProFiles/Orion.gp5'
+# file = 'GuitarProFiles/Stairway to Heaven.gp5'
+# file = 'GuitarProFiles/Deutschland.gp5'
 song = guitarpro.parse(file)
 
 def getTuning(obj):

@@ -2,12 +2,12 @@
 
 import guitarpro
 
-file = 'Orion.gp5'
-# file = 'Stairway to Heaven.gp5'
+file = 'GuitarProFiles/Orion.gp5'
+# file = 'GuitarProFiles/Stairway to Heaven.gp5'
 song = guitarpro.parse(file)
 
 selected_track = "J. Hetfield (Rhythm)"
-# selected_track = "Jimmy Page - Acoustic Guitar"
+# selected_track = "GuitarProFiles/Jimmy Page - Acoustic Guitar"
 measure_start = 72
 measure_stop = 72
 

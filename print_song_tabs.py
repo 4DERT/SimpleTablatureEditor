@@ -1,52 +1,35 @@
 #/usr/bin/python
 
 import guitarpro
+from pprint import pprint
 
-file = 'GuitarProFiles/Orion.gp5'
-# file = 'GuitarProFiles/Stairway to Heaven.gp5'
-song = guitarpro.parse(file)
+# FILE = 'GuitarProFiles/Orion.gp5'
+FILE = 'GuitarProFiles/Stairway to Heaven.gp5'
+SELECTED_TRACK = 0
+MEASURE_START = 33
+MEASURE_STOP = 35
 
-selected_track = "J. Hetfield (Rhythm)"
-# selected_track = "GuitarProFiles/Jimmy Page - Acoustic Guitar"
-measure_start = 72
-measure_stop = 72
+song = guitarpro.parse(FILE)
 
-# for track in song.tracks:
-#     if track.name == selected_track:
-#         for measure in track.measures:
-#             if measure.number >= measure_start and measure.number <= measure_stop:
-#                 print(f"NEW MEASURE: {measure.number}")
-#                 for voice in measure.voices:
-#                     print("\tNEW VOICE")
-#                     for beat in voice.beats:
-#                         print(f"\t\tNEW BEAT: 1/{beat.duration.value}")
-#                         try:
-#                             # print(f"\t\t\t{beat.notes}")
-#                             for chord in beat.notes:
-#                                 print(f"\t\t\t{chord.value}, on string: {chord.string}")
-#                                 # print(chord)
-#                         except:
-#                             pass
+def print_structure(song, selected_track, measure_start, measure_stop):
+    tab = '\t'
+    print(song.tracks[selected_track].name)
+    for measure in song.tracks[selected_track].measures:
+        if measure.number >= measure_start and measure.number <= measure_stop:
+            print(f"NEW MEASURE: {measure.number}")
+            for voice in measure.voices:
+                print(f"{tab}NEW VOICE")
 
+                for beat in voice.beats:
+                    print(f"{tab*2}NEW BEAT: 1/{beat.duration.value}")
 
-print(song.tracks[0].name)
-for measure in song.tracks[0].measures:
-    if measure.number >= measure_start and measure.number <= measure_stop:
-        print(f"NEW MEASURE: {measure.number},\
-             measure.timeSignature.beams = {measure.timeSignature.beams}")
-        
-        for voice in measure.voices:
-            print(f"\tNEW VOICE")
-            for beat in voice.beats:
-                print(f"\t\tNEW BEAT: 1/{beat.duration.value}")
-                try:
-                    # print(f"\t\t\t{beat.notes}")
-                    for chord in beat.notes:
-                        print(f"\t\t\t {chord.type}")
-                        print(f"\t\t\t {chord.beat.duration.isDotted}")
-                        x = chord.effect.palmMute
-                        print(f"\t\t\t {x}")
-                        print(f"\t\t\t {chord.value}, on string: {chord.string}")
-                        # print(chord)
-                except:
-                    pass
+                    for note in beat.notes:
+                        for x, y in note.__dict__.items():
+                            print(f'{tab*3} {x} : {y}')
+
+                            # if str(x) == 'beat':
+                            #     for k, v in beat.__dict__.items():
+                            #         print(f'{tab*4} {k} : {v}')
+
+if __name__ == "__main__":
+    print_structure(song, 0, MEASURE_START, MEASURE_STOP)

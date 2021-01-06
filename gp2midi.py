@@ -47,7 +47,6 @@ midi.eventtime_is_ticks=True
 ###################################
 
 # num_measures = len(guitarpro.parse(FILE).tracks[SELECTED_TRACK].measures)
-
 for measure in song.tracks[SELECTED_TRACK].measures:
     tuning = getTuning(song.tracks[SELECTED_TRACK])
     if measure.number >= MEASURE_START and measure.number <= MEASURE_STOP:

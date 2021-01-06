@@ -37,11 +37,13 @@ def fileInfo(file):
     for track in song.tracks:
         num_of_bars.append(len(track.measures))
     print("track have",num_of_bars,"measures")
-    # tracksInfo(song)
+    tracksInfo(song)
     print('\n\n')
 
 if __name__ == "__main__":
     directory = 'GuitarProFiles/'
-    for filename in os.listdir(directory):
-        fileInfo(directory+filename)
+    # for filename in os.listdir(directory):
+    #     fileInfo(directory+filename)
+
+    fileInfo(directory+'Orion.gp5')
     

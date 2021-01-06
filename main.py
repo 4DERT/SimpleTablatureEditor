@@ -28,13 +28,13 @@ class GP2Midi():
     def checkSelectedTrack(self, track):
         if track == 'all':
             return 'all'
-        elif track in range(1, len(self.gp_file.tracks)):
+        elif track in range(1, len(self.gp_file.tracks) + 1):
             return self.gp_file.tracks[track-1]
         else:
             raise TrackError(track)
 
     def checkFirstMeasure(self, measure):
-        if measure in range(1, self.NUM_OF_MEASURES):
+        if measure in range(1, self.NUM_OF_MEASURES + 1):
             return measure-1
         else:
             raise MeasureError(measure)
@@ -42,7 +42,7 @@ class GP2Midi():
     def checkLastMeasure(self, measure):
         if measure == 'last':
             return self.NUM_OF_MEASURES
-        elif measure in range(0, self.NUM_OF_MEASURES) and measure >= self.FIRST_MEASURE:
+        elif measure in range(0, self.NUM_OF_MEASURES + 1) and measure >= self.FIRST_MEASURE:
             return measure
         else:
             raise MeasureError(measure)
@@ -54,7 +54,6 @@ class GP2Midi():
         self.midi = MIDIFile(1)
         if self.SELECTED_TRACK == 'all':
             for i, gp_track in enumerate(self.gp_file.tracks):
-                print(i)
                 self.write2Midi(gp_track, i)
         else:
             self.write2Midi(self.SELECTED_TRACK, 0)
@@ -78,9 +77,17 @@ class GP2Midi():
             tuning = self.getTuning(track)
             self.new_bar += 4.0
 
+            print("NEW MEASURE",measure.number)
             for i, voice in enumerate(measure.voices):
                 if i==0:
                     for beat in voice.beats:
+                        
+                        try:
+                            if beat.effect.mixTableChange.tempo.value != self.tempo:
+                                self.midi.addTempo(self.track, self.time, self.tempo)
+                        except AttributeError:
+                            pass
+
                         for note in beat.notes:
                             self.duration = 1/beat.duration.value*4
                             volume =  note.velocity
@@ -101,5 +108,8 @@ class GP2Midi():
 
 
 # obj = GP2Midi('GuitarProFiles/Stairway to Heaven.gp5', 'all', 1, 4, 'uf')
-obj = GP2Midi('GuitarProFiles/Deutschland.gp5', 'all', 25, 35, 'uf')
+# obj = GP2Midi('GuitarProFiles/Deutschland.gp5', 'all', 25, 35, 'uf')
+obj = GP2Midi('GuitarProFiles/Orion.gp5', 1, 123, 124, 'oriont')
+# obj = GP2Midi('GuitarProFiles/Enter Sandman.gp5', 4, 13, 20, 'enter')
+# obj = GP2Midi('GuitarProFiles/bell.gp5', 2, 123, 'last', 'bell')
 obj.convert2Midi()

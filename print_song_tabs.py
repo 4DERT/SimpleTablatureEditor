@@ -3,13 +3,13 @@
 import guitarpro
 from pprint import pprint
 
-FILE = 'GuitarProFiles/Orion.gp5'
+FILE = 'GuitarProFiles/testgp.gp5'
 # FILE = 'GuitarProFiles/Stairway to Heaven.gp5'
 # FILE = 'GuitarProFiles/bell.gp5'
 # FILE = 'GuitarProFiles/master.gp5'
 SELECTED_TRACK = 0
-MEASURE_START = 120
-MEASURE_STOP = 130
+MEASURE_START = 0
+MEASURE_STOP = 14
 
 song = guitarpro.parse(FILE)
 
@@ -18,6 +18,7 @@ def print_structure(song, selected_track, measure_start, measure_stop):
     print(song.tracks[selected_track].name)
     for measure in song.tracks[selected_track].measures:
         if measure.number >= measure_start and measure.number <= measure_stop:
+            print("MIDI CHANNNNNEL:",measure.track.channel)
             print(f"NEW MEASURE: {measure.number}")
             # print(f"TIME SIGNATURE: {measure.timeSignature}")
             # print(f"TEMPO: {measure.timeSignature}")
@@ -48,7 +49,7 @@ def print_structure(song, selected_track, measure_start, measure_stop):
             print('\n\n\n')
 
 if __name__ == "__main__":
-    print_structure(song, 1, MEASURE_START, MEASURE_STOP)
+    print_structure(song, SELECTED_TRACK, MEASURE_START, MEASURE_STOP)
 
 #TODO
 # append time signatures to midi

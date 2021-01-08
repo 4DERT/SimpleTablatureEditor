@@ -1,2 +1,3 @@
 GuitarProFiles/*
 *.mid
+__pycache__

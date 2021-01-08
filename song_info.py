@@ -2,11 +2,14 @@
 
 import guitarpro
 import os
+from urllib.request import urlopen
 
-file = 'GuitarProFiles/Orion.gp5'
+
+# file = 'GuitarProFiles/Orion.gp5'
+# file = "https://d12drcwhcokzqv.cloudfront.net/44175980.gp5"
 # file = 'GuitarProFiles/Stairway to Heaven.gp5'
 # file = 'GuitarProFiles/Deutschland.gp5'
-song = guitarpro.parse(file)
+
 
 def getTuning(obj):
     """
@@ -26,7 +29,37 @@ def tracksInfo(song):
         print()
 
 def fileInfo(file):
-    song = guitarpro.parse(file)
+#DONT WORK
+    conditions = [
+        True if file.endswith('.gp3') else False,
+        True if file.endswith('.gp4') else False,
+        True if file.endswith('.gp5') else False
+    ]
+    if any(conditions):
+        if file.startswith('https'):
+            with urlopen(file) as stream:
+                song = guitarpro.parse(stream)
+        else:
+            song = guitarpro.parse(file)
+    else:
+        raise ValueError
+    
+
+# WORKS
+    # if file.startswith('https'):
+    #     with urlopen(file) as stream:
+    #         print(stream)
+    #         song = guitarpro.parse(stream)
+    # else:
+    #     song = guitarpro.parse(file)
+
+#DONT
+    # if file.startswith('https'):
+    #     with urlopen(file) as stream:
+    #         file = stream
+    # print(file)
+    # song = guitarpro.parse(file)
+    
     print(f"File: {file}")
     print(f"Song title: {song.title}, from album: {song.album}")
     print(F"Song artist: {song.artist}")
@@ -45,5 +78,12 @@ if __name__ == "__main__":
     # for filename in os.listdir(directory):
     #     fileInfo(directory+filename)
 
-    fileInfo(directory+'Orion.gp5')
+    # fileInfo(directory+'Orion.gp5')
+
+    # file = directory+'Orion.gp5'
+
+    # url test
+    file = "https://d12drcwhcokzqv.cloudfront.net/43845421.gp5"
+    fileInfo(file)
+
     

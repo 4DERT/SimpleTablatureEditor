@@ -21,9 +21,7 @@ class FileError(Error):
     pass
 
 class GP2Midi():
-    def __init__(self, GP_FILE, GP_SELECTED_TRACK = -1, FIRST_MEASURE = 1, LAST_MEASURE = -1, OUTPUT_FILE_NAME = 'output'):
-        
-        
+    def __init__(self, GP_FILE, GP_SELECTED_TRACK = -1, FIRST_MEASURE = 1, LAST_MEASURE = -1, OUTPUT_FILE_NAME = 'output', IS_VERBOSE = False):
         self.gp_file = self._checkFile(GP_FILE)
         self.SELECTED_TRACK = self._checkSelectedTrack(GP_SELECTED_TRACK)
         # Probably every track has the same number of bars
@@ -31,6 +29,7 @@ class GP2Midi():
         self.FIRST_MEASURE = self._checkFirstMeasure(FIRST_MEASURE)
         self.LAST_MEASURE = self._checkLastMeasure(LAST_MEASURE)
         self.OUTPUT_FILE_NAME = OUTPUT_FILE_NAME
+        self.IS_VERBOSE = IS_VERBOSE
 
     def _checkFile(self, file):
         conditions = [
@@ -72,11 +71,15 @@ class GP2Midi():
     def _getTuning(self, obj):
         return [string for string in obj.strings]
 
+    def _console_log(self, msg: str, tabs: int = 0):
+        if self.IS_VERBOSE:
+            print('\t'*tabs, msg)
+
     def convert2Midi(self):
         self.midi = MIDIFile(1)
         if self.SELECTED_TRACK == 'all':
             for i, gp_track in enumerate(self.gp_file.tracks):
-                print(f"~~~~~~~~~~~~~~{gp_track.name}~~~~~~~~~~~~~~")
+                self._console_log(f'Track name: {gp_track.name}:', tabs = 0)
                 self._write2Midi(gp_track, i)
         else:
             self._write2Midi(self.SELECTED_TRACK, 0)
@@ -102,16 +105,15 @@ class GP2Midi():
             measure = track.measures[measure]
             tuning = self._getTuning(track)
 
-            
-            numerator = measure.timeSignature.numerator                     # ile
-            dominator = measure.timeSignature.denominator.value             # jakich nut
+            numerator = measure.timeSignature.numerator
+            dominator = measure.timeSignature.denominator.value
 
             if numerator != self.numerator or dominator != self.dominator:
                 self.numerator = numerator
                 self.dominator = dominator
 
                 self.bar_time = float(numerator) * 1/float(dominator)*4
-                print(measure.number, self.numerator, self.dominator, 'bar end:', self.bar_time)
+                self._console_log(f'~~ New time signature: {self.numerator} {self.dominator}, bar will last {self.bar_time} tics', tabs=1)
 
                 dominator_values = {2 : 1, 4 : 2, 8 : 3, 16 : 4, 32 : 4}
                 dominator_midi = dominator_values[self.dominator]
@@ -120,46 +122,50 @@ class GP2Midi():
 
             self.new_bar += self.bar_time
 
-            print("NEW MEASURE",measure.number)
+            self._console_log(f'NEW MEASURE: {measure.number}:', tabs=1)
+
             for i, voice in enumerate(measure.voices):
                 if i==0:
                     for beat in voice.beats:
+                        self._console_log(f'New beat:', tabs=2)
                         self.duration = 1/beat.duration.value*4
-                        print(self.duration)
 
                         try:
                             tempo = beat.effect.mixTableChange.tempo.value
                             if tempo != self.tempo:
                                 self.tempo = tempo
                                 self.midi.addTempo(self.track, self.time, self.tempo)
+                                self._console_log(f'~~ New tempo: {self.tempo}', tabs=2)
                         except AttributeError:
                             pass
                         
                     # INTERPRETATION:
                         # note with dot
                         if beat.duration.isDotted:
+                            self._console_log(f"~~~ Beat is doted:", tabs=2)
                             self.duration += self.duration/2
 
                         # Tuplet (tripets)
-                        if beat.duration.tuplet.enters != 1 or beat.duration.tuplet.times != 1:
-                            self.duration = (self.duration / beat.duration.tuplet.enters) * beat.duration.tuplet.times
+                        tuplet = beat.duration.tuplet
+                        if tuplet.enters != 1 or tuplet.times != 1:
+                            self._console_log(f"~~~ New tuplet: enters: {tuplet.enters}, times: {tuplet.times}", tabs=2)
+                            self.duration = (self.duration / tuplet.enters) * tuplet.times
 
                         # rest beat
                         if beat.status.value == 2:
+                            self._console_log(f'~~~ Rest beat', tabs=2)
                             self.time += self.duration
                             continue
                         
-
                         for note in beat.notes:
-                            volume =  note.velocity
-                            # pitch = tuning[note.string-1].value + note.value
-                            pitch = note.realValue
-
-                            # INTERPRETATION OF EFFECTS 
+                        # INTERPRETATION OF EFFECTS 
+                            # Tied note
+                            if note.type.name == 'tie':
+                                self._console_log(f'~~~ note is tied', tabs=3)
+                                continue
                             
-                            
-                            print('\t',self.track, self.channel, pitch, self.time, self.duration, volume)
-                            self.midi.addNote(self.track, self.channel, pitch, self.time, self.duration, volume)
+                            self._console_log(f'Adding a note: track: {self.track}, channel: {self.channel}, pitch: {note.realValue}, time: {self.time}, duration: {self.duration}, velocity: {note.velocity}', tabs=3)
+                            self.midi.addNote(self.track, self.channel, note.realValue, self.time, self.duration, note.velocity)
                         self.time += self.duration
                     self.time = self.new_bar
         

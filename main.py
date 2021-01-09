@@ -14,19 +14,16 @@ if __name__ == "__main__":
                         help='Track number',
                         metavar='', required=False, default=-1)
 
-    parser.add_argument('-f', '--first_measure', type=int,
-                        help='From what bar start converting',
-                        metavar='', required=False, default=1)
-
-    parser.add_argument('-l', '--last_measure', type=int,
-                        help='Measure on which finish converting',
-                        metavar='', required=False, default=-1)
+    parser.add_argument('-m', '--measure', action='append',nargs=2, type=int,
+                        help='Select measures', metavar='num')
 
     parser.add_argument('-o', '--output', type=str,
                         help='Name of output file',
                         metavar='', required=False, default='output')
+    
+    parser.add_argument('--verbose', action='store_true', help='Print verbose')
 
     args = parser.parse_args()
 
-    obj = GP2Midi(args.input, args.track, args.first_measure, args.last_measure, args.output)
+    obj = GP2Midi(args.input, args.track, args.measure[0][0], args.measure[0][1], args.output, args.verbose)
     obj.convert2Midi()

@@ -8,9 +8,9 @@ from pprint import pprint
 # FILE = 'GuitarProFiles/bell.gp5'
 # FILE = 'GuitarProFiles/master.gp5'
 FILE = 'GuitarProFiles/nothing.gp5'
-SELECTED_TRACK = 1
-MEASURE_START = 146
-MEASURE_STOP = 150
+SELECTED_TRACK = 0
+MEASURE_START = 46
+MEASURE_STOP = 46
 
 song = guitarpro.parse(FILE)
 
@@ -49,12 +49,18 @@ def print_structure(song, selected_track, measure_start, measure_stop):
                     # print(f"{tab*3}beat.duration.quarter: {beat.duration.quarter}")
                     # print(f"{tab*3}beat.duration.quarterTime: {beat.duration.quarterTime}")
                     
-                    for x, y in beat.duration.__dict__.items():
-                        print(tab*3,x, y)
-                        
+                    # for x, y in beat.__dict__.items():
+                    #     print(tab*3,x, y)
+                    
+
 
                     for note in beat.notes:
                         print(f"{tab*4}VALUE: {str(note.realValue)}")
+                        print(f"{tab*4}next note: {beat.notes.index(note)+1}")
+                        print(f"{tab*4}note.type.name: {note.type.name}")
+                              
+                        
+                        
                         
                         # x = note.effect.
                         # print(x)

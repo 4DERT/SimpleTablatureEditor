@@ -1,3 +1,5 @@
 GuitarProFiles/*
+cache
 *.mid
+*.gp5
 __pycache__

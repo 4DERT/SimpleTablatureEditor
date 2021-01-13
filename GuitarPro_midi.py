@@ -29,7 +29,6 @@ class Midi:
             self.tempo = self.gp_file.tempo
             self.__console_log(f'NEW TRACK: {gp_track.number} - {gp_track.name}')
             track = gp_track.number
-            self.__console_log(gp_track.channel)
             channel = gp_track.channel.channel
 
             self.midi.addTrackName(track, 0, gp_track.name)

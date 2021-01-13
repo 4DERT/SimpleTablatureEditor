@@ -64,10 +64,14 @@ class GPTools:
         guitarpro.write(self.song, name)
 
     def save_as_midi(self, name = None):
+        """
+        Write song to midi file
+        """
         midi = Midi(self.song)
         if not name:
             name = self.__generate_file_name() + '.mid'
         midi.write_to_file(name)
+
             
 
 # obj = GPTools("https://d12drcwhcokzqv.cloudfront.net/41801025.gp5")

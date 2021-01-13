@@ -28,6 +28,26 @@ class GPTools:
         file_name = 'output' if len(file_name) < 1 else file_name
         return file_name
 
+    def __getTuning(self, track):
+        return [str(string) for string in track.strings]
+
+    def print_song_info(self):
+        print(f"Title: {self.song.title}")
+        print(f'Album: {self.song.album}')
+        print(F"Artist: {self.song.artist}")
+        print(F"Tempo: {self.song.tempo} BPM")
+        print(f"Song have {len(self.song.tracks[0].measures)} measures")
+        print(f"Song have {len(self.song.tracks)} tracks:")
+        for track in self.song.tracks:
+            tuning = ', '.join(self.__getTuning(track)[::-1])
+            print(f"{track.number}. {track.name}")
+            if track.isPercussionTrack:
+                print(f'\t-> drums: {len(track.strings)}')
+            else:
+                print(f'\t-> strings: {len(track.strings)}')
+                print(f'\t-> tuning: {tuning}')
+            print()
+
     def grep_track(self, *track: int):
         """
         Select track you want in output file
@@ -45,6 +65,8 @@ class GPTools:
         """
         Select measures you want in output file
         """
+        if stop == -1:
+            stop = len(self.song.tracks[0].measures)
         for track in self.song.tracks:
             measures = []
             for m in range(start-1, stop):
@@ -63,22 +85,11 @@ class GPTools:
             name = self.__generate_file_name() + '.gp5'
         guitarpro.write(self.song, name)
 
-    def save_as_midi(self, name = None):
+    def save_as_midi(self, name = None, verbose = False):
         """
         Write song to midi file
         """
-        midi = Midi(self.song)
+        midi = Midi(self.song, verbose)
         if not name:
             name = self.__generate_file_name() + '.mid'
         midi.write_to_file(name)
-
-            
-
-# obj = GPTools("https://d12drcwhcokzqv.cloudfront.net/41801025.gp5")
-obj = GPTools("GuitarProFiles/stair.gp5")
-# obj.grep_track(1, 2, 3, 4, 5, 6, 7, 8, 9)
-# obj.grep_track(2)
-# obj.grep_measures(1, 1)
-# obj.grep_measures(1, 4)
-obj.save_as_gp()
-obj.save_as_midi()

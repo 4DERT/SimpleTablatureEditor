@@ -29,7 +29,6 @@ def tracksInfo(song):
         print()
 
 def fileInfo(file):
-#DONT WORK
     conditions = [
         True if file.endswith('.gp3') else False,
         True if file.endswith('.gp4') else False,
@@ -44,21 +43,6 @@ def fileInfo(file):
     else:
         raise ValueError
     
-
-# WORKS
-    # if file.startswith('https'):
-    #     with urlopen(file) as stream:
-    #         print(stream)
-    #         song = guitarpro.parse(stream)
-    # else:
-    #     song = guitarpro.parse(file)
-
-#DONT
-    # if file.startswith('https'):
-    #     with urlopen(file) as stream:
-    #         file = stream
-    # print(file)
-    # song = guitarpro.parse(file)
     
     print(f"File: {file}")
     print(f"Song title: {song.title}, from album: {song.album}")

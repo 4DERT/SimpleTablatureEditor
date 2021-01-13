@@ -3,7 +3,7 @@
 from midiutil import MIDIFile
 
 class Midi:
-    def __init__(self, GuitarPro, IS_VERBOSE = True):
+    def __init__(self, GuitarPro, IS_VERBOSE = False):
         self.gp_file = GuitarPro
         self.IS_VERBOSE = IS_VERBOSE
         self.dominator_values = {2 : 1, 4 : 2, 8 : 3, 16 : 4, 32 : 4}   # convert guitar pro domiantor values to midi

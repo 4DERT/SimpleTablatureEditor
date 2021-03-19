@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 # dependencies
 # guitarpro (pip install PyGuitarPro) - tested on version 0.8
 # midiutil (pip install MIDIUtil)- tested on version 1.2.1
@@ -33,6 +31,8 @@ if __name__ == "__main__":
 
 
     args = parser.parse_args()
+
+    print(args)
 
     tool = GPTools(args.input)
     if args.song_info:

@@ -31,7 +31,7 @@ class Midi:
             track = gp_track.number
             channel = gp_track.channel.channel
 
-            self.midi.addTrackName(track, 0, gp_track.name)
+            self.midi.addTrackName(track, 0, f'ch{channel+1} - {gp_track.name}')
             self.midi.addTempo(track, 0, self.tempo)
 # MEASURES
             for measure in gp_track.measures:

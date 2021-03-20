@@ -1,7 +1,3 @@
-# dependencies
-# guitarpro (pip install PyGuitarPro) - tested on version 0.8
-# midiutil (pip install MIDIUtil)- tested on version 1.2.1
-
 import argparse
 from GuitarProTools import GPTools
 import gui

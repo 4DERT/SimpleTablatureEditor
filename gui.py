@@ -69,13 +69,13 @@ class MainWindow(QMainWindow):
         if files:
             if len(files) == 1:
                 self.ui.lineEdit_location.setText(files[0])
-                self.file = files[0]
             else:
                 self.create_error_dialog("Please selct only one file")
     
 
     def load_gp_tools(self, is_new = True):
         try:
+            self.file = self.ui.lineEdit_location.text()
             self.gp_tools = GPTools(self.file)
 
             if is_new:

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import guitarpro
 from urllib.request import urlopen
 from GuitarPro_midi import Midi

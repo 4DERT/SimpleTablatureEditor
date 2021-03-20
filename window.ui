@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>simple tabulature editor.svg</normaloff>simple tabulature editor.svg</iconset>
+    <normaloff>STE.svg</normaloff>STE.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">

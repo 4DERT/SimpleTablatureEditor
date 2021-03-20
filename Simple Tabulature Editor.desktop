@@ -1,0 +1,21 @@
+[Desktop Entry]
+Comment[en_GB]=
+Comment=
+Encoding=UTF-8
+Exec=simple_tabulature_editor
+GenericName[en_GB]=
+GenericName=
+Icon=/home/kacper/Documents/Python/Simple Tabulature Editor/STE.svg
+MimeType=
+Name[en_GB]=Simple Tabulature Editor
+Name=Simple Tabulature Editor
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+Version=1.0
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import argparse
 from GuitarProTools import GPTools
 import gui

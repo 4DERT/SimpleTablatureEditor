@@ -1,3 +1,5 @@
 attrs==20.3.0
 MIDIUtil==1.2.1
 PyGuitarPro==0.8
+PySide6==6.0.2
+shiboken6==6.0.2

@@ -4,13 +4,14 @@
 
 import argparse
 from GuitarProTools import GPTools
+import gui
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Edit and convert GuitarPro files')
+    parser = argparse.ArgumentParser(description='Edit and convert GuitarPro files. Run without flags to enable gui')
 
     parser.add_argument('-i', '--input',
                         help='Path/url to GP* file',
-                        metavar='', required=True)
+                        metavar='', required=False)
 
     parser.add_argument('-t', '--track', action='append', nargs='*', type=int,
                         help='Select tracks', metavar='N')
@@ -32,19 +33,20 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    print(args)
-
-    tool = GPTools(args.input)
-    if args.song_info:
-        tool.print_song_info()
-        exit()
-    if args.track:
-        tool.grep_track(*args.track[0])
-    if args.measure:
-        tool.grep_measures(args.measure[0][0], args.measure[0][1])
-    if args.gp5 == False and args.midi == False:
-        args.gp5 = True
-    if args.gp5:
-        tool.save_as_gp(args.output)
-    if args.midi:
-        tool.save_as_midi(args.output, args.debug)
+    if args.input != None:
+        tool = GPTools(args.input)
+        if args.song_info:
+            tool.print_song_info()
+            exit()
+        if args.track:
+            tool.grep_track(*args.track[0])
+        if args.measure:
+            tool.grep_measures(args.measure[0][0], args.measure[0][1])
+        if args.gp5 == False and args.midi == False:
+            args.gp5 = True
+        if args.gp5:
+            tool.save_as_gp(args.output)
+        if args.midi:
+            tool.save_as_midi(args.output, args.debug)
+    else:
+        gui.run()

@@ -48,6 +48,24 @@ class GPTools:
                 print(f'\t-> tuning: {tuning}')
             print()
 
+    def get_song_info(self) -> dict:
+        tracks = {}
+        for track in self.song.tracks:
+            tuning = ', '.join(self.__getTuning(track)[::-1])
+            name = track.name
+            isPercussion = track.isPercussionTrack
+            tracks[track.number] = [name, tuning, isPercussion]
+        
+        info = {
+            'Title': self.song.title,
+            'Artist': self.song.artist,
+            'Album': self.song.album,
+            'Tempo': self.song.tempo,
+            'Measures': len(self.song.tracks[0].measures),
+            'Tracks': tracks
+        }
+        return info
+
     def grep_track(self, *track: int):
         """
         Select track you want in output file

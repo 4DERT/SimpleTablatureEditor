@@ -14,11 +14,15 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(430, 730)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("simple tabulature editor.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_2.setAlignment(QtCore.Qt.AlignCenter)
         self.groupBox_2.setObjectName("groupBox_2")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox_2)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -115,14 +119,14 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Simple Tablature Editor "))
         self.groupBox_2.setTitle(_translate("MainWindow", "Select tracks and measures"))
         self.label_2.setText(_translate("MainWindow", "Select measures"))
         self.button_gp5.setText(_translate("MainWindow", "Save as GP5"))
         self.button_midi.setText(_translate("MainWindow", "Save as MIDI"))
         self.button_select.setText(_translate("MainWindow", "Select file"))
         self.groupBox.setTitle(_translate("MainWindow", "Info about song"))
-        self.button_ok.setText(_translate("MainWindow", "ok"))
+        self.button_ok.setText(_translate("MainWindow", "Load Song"))
         self.lineEdit_location.setPlaceholderText(_translate("MainWindow", "Select file or type URL"))
 
 

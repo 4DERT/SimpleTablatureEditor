@@ -1,5 +1,10 @@
-GuitarProFiles/*
+GuitarProFiles
 cache
 *.mid
 *.gp5
 __pycache__
+.vscode
+build
+dist
+old
+venv

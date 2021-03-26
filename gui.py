@@ -1,4 +1,5 @@
 import sys
+import subprocess
 from PyQt5.QtWidgets import QApplication, QMainWindow, QCheckBox, QFileDialog, QMessageBox
 from PyQt5 import QtCore
 from ui_mainwindow import Ui_MainWindow
@@ -20,6 +21,7 @@ class MainWindow(QMainWindow):
         self.ui.button_select.clicked.connect(self.load_file)
         self.ui.button_gp5.clicked.connect(lambda: self.save_file(False))
         self.ui.button_midi.clicked.connect(lambda: self.save_file(True))
+        self.ui.button_external_editor.clicked.connect(self.open_in_external_editor)
 
         self.ui.spinBox_first.valueChanged.connect(self.update_measures_spinBoxes)
         self.ui.spinBox_second.valueChanged.connect(self.update_measures_spinBoxes)
@@ -34,7 +36,7 @@ class MainWindow(QMainWindow):
         msg.exec_()
 
 
-    def save_file(self, isMidi):
+    def save_file(self, isMidi, fileName = None):
         m_start = self.ui.spinBox_first.value()
         m_stop = self.ui.spinBox_second.value()
         selected_tracks = []
@@ -53,8 +55,11 @@ class MainWindow(QMainWindow):
 
         ext = ".midi" if isMidi else ".gp5"
         ext_filter = "Midi File (*.midi)" if isMidi else "Guitar Pro 5 File (*.gp5)"
-        options = QFileDialog.Options()
-        fileName, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()",f"{self.save_file_name}{ext}",f"{ext_filter}", options=options)
+
+        if fileName == None:
+            options = QFileDialog.Options()
+            fileName, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()",f"{self.save_file_name}{ext}",f"{ext_filter}", options=options)
+
         if fileName:
             if isMidi:
                 self.gp_tools.save_as_midi(fileName, False)
@@ -97,6 +102,7 @@ class MainWindow(QMainWindow):
                 self.ui.spinBox_first.setValue(1)
                 self.ui.button_gp5.setEnabled(True)
                 self.ui.button_midi.setEnabled(True)
+                self.ui.button_external_editor.setEnabled(True)
                 self.ui.spinBox_first.setEnabled(True)
                 self.ui.spinBox_second.setEnabled(True)
             
@@ -110,7 +116,7 @@ class MainWindow(QMainWindow):
             if child.widget() is not None:
                 child.widget().deleteLater()
             elif child.layout() is not None:
-                clearLayout(child.layout())
+                self.clearLayout(child.layout())
 
 
     def create_check_boxes(self, items: dict):
@@ -148,6 +154,19 @@ class MainWindow(QMainWindow):
         self.ui.spinBox_second.setMaximum(self.max_measure)
         self.ui.spinBox_second.setMinimum(self.ui.spinBox_first.value())
         self.ui.spinBox_first.setMaximum(self.ui.spinBox_second.value())
+
+    def open_in_external_editor(self):
+        if sys.platform == "win32":
+            path = "ste_tmp.gp5"
+            opener = "start"
+            shell = True
+        else:   #linux
+            path = "/tmp/ste_tmp.gp5"
+            opener = "xdg-open"
+            shell = False
+        
+        self.save_file(False, path)
+        subprocess.call([opener, path], shell=shell)
 
 def run():
     app = QApplication(sys.argv)

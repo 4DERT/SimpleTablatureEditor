@@ -1,10 +1,13 @@
 import sys
 import subprocess
 from PyQt5.QtWidgets import QApplication, QMainWindow, QCheckBox, QFileDialog, QMessageBox
+from PyQt5.QtGui import QCursor
 from PyQt5 import QtCore
 from ui_mainwindow import Ui_MainWindow
 
 from GuitarProTools import GPTools
+
+from time import sleep
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -37,35 +40,38 @@ class MainWindow(QMainWindow):
 
 
     def save_file(self, isMidi, fileName = None):
-        m_start = self.ui.spinBox_first.value()
-        m_stop = self.ui.spinBox_second.value()
-        selected_tracks = []
+        try:
+            m_start = self.ui.spinBox_first.value()
+            m_stop = self.ui.spinBox_second.value()
+            selected_tracks = []
 
-        for i, box in self.check_boxes.items():
-            if box.isChecked():
-                selected_tracks.append(int(i))
-        
-        if selected_tracks == []:
-            self.create_error_dialog("you have to choose tracks")
-            return
-        
-        
-        self.gp_tools.grep_track(*selected_tracks)
-        self.gp_tools.grep_measures(m_start, m_stop)
+            for i, box in self.check_boxes.items():
+                if box.isChecked():
+                    selected_tracks.append(int(i))
+            
+            if selected_tracks == []:
+                self.create_error_dialog("you have to choose tracks")
+                return
+            
+            
+            self.gp_tools.grep_track(*selected_tracks)
+            self.gp_tools.grep_measures(m_start, m_stop)
 
-        ext = ".midi" if isMidi else ".gp5"
-        ext_filter = "Midi File (*.midi)" if isMidi else "Guitar Pro 5 File (*.gp5)"
+            ext = ".midi" if isMidi else ".gp5"
+            ext_filter = "Midi File (*.midi)" if isMidi else "Guitar Pro 5 File (*.gp5)"
 
-        if fileName == None:
-            options = QFileDialog.Options()
-            fileName, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()",f"{self.save_file_name}{ext}",f"{ext_filter}", options=options)
+            if fileName == None:
+                options = QFileDialog.Options()
+                fileName, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()",f"{self.save_file_name}{ext}",f"{ext_filter}", options=options)
 
-        if fileName:
-            if isMidi:
-                self.gp_tools.save_as_midi(fileName, False)
-            else:
-                self.gp_tools.save_as_gp(fileName)
-        self.load_gp_tools(False)
+            if fileName:
+                if isMidi:
+                    self.gp_tools.save_as_midi(fileName, False)
+                else:
+                    self.gp_tools.save_as_gp(fileName)
+            self.load_gp_tools(False)
+        except:
+            self.create_error_dialog("Try to reload the file ")
             
 
     def load_file(self):
@@ -76,10 +82,21 @@ class MainWindow(QMainWindow):
                 self.ui.lineEdit_location.setText(files[0])
             else:
                 self.create_error_dialog("Please selct only one file")
-    
+
+    def set_enabled(self, lock: bool):
+        self.ui.button_gp5.setEnabled(lock)
+        self.ui.button_midi.setEnabled(lock)
+        self.ui.button_external_editor.setEnabled(lock)
+        self.ui.spinBox_first.setEnabled(lock)
+        self.ui.spinBox_second.setEnabled(lock)
+        self.ui.widget_tracks.setEnabled(lock)
 
     def load_gp_tools(self, is_new = True):
         try:
+            self.ui.centralwidget.setCursor(QCursor(QtCore.Qt.WaitCursor))
+            self.ui.button_ok.setCursor(QCursor(QtCore.Qt.WaitCursor))
+            self.set_enabled(False)
+
             self.file = self.ui.lineEdit_location.text()
             self.gp_tools = GPTools(self.file)
 
@@ -100,14 +117,16 @@ class MainWindow(QMainWindow):
                 self.update_measures_spinBoxes()
                 self.ui.spinBox_second.setValue(self.max_measure)
                 self.ui.spinBox_first.setValue(1)
-                self.ui.button_gp5.setEnabled(True)
-                self.ui.button_midi.setEnabled(True)
-                self.ui.button_external_editor.setEnabled(True)
-                self.ui.spinBox_first.setEnabled(True)
-                self.ui.spinBox_second.setEnabled(True)
+                self.set_enabled(True)
             
-        except ValueError:
-            self.create_error_dialog("the file location is incorrect ")
+        except (ValueError, FileNotFoundError):
+            self.create_error_dialog("The file location is incorrect")
+        except:
+            self.create_error_dialog("")
+        
+        self.ui.centralwidget.setCursor(QCursor(QtCore.Qt.ArrowCursor))
+        self.ui.button_ok.setCursor(QCursor(QtCore.Qt.ArrowCursor))
+        self.set_enabled(True)
 
 
     def clear_layout(self, layout):
@@ -123,15 +142,20 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.ui.verticalLayout_2)
         self.check_boxes = {}
 
+        _translate = QtCore.QCoreApplication.translate
         box_select_all = QCheckBox(self.ui.widget_tracks)
         box_select_all.setText("Select all")
         box_select_all.stateChanged.connect(self.select_all_boxes)
+        box_select_all.setShortcut(_translate("MainWindow", "Ctrl+`"))
+        box_select_all.setToolTip(_translate("MainWindow", "Select all tracks (Ctrl + `)"))
+
         self.ui.verticalLayout_2.addWidget(box_select_all)
 
         for i, spec in items.items():
             title = str(i) + ". " + spec[0] + " (" + spec[1] + ")"
             check_box = QCheckBox(self.ui.widget_tracks)
             check_box.setText(title)
+            check_box.setShortcut(_translate("MainWindow", f"Ctrl+{i}"))
             self.check_boxes[i] = (check_box)
             self.ui.verticalLayout_2.addWidget(check_box)
         

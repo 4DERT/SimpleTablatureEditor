@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +20,19 @@
    <iconset>
     <normaloff>STE.svg</normaloff>STE.svg</iconset>
   </property>
+  <property name="animated">
+   <bool>true</bool>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="3" column="0" colspan="2">
      <widget class="QGroupBox" name="groupBox_2">
@@ -39,7 +54,7 @@
             <x>0</x>
             <y>0</y>
             <width>388</width>
-            <height>208</height>
+            <height>238</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -58,7 +73,7 @@
           <item row="0" column="0" colspan="2">
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Select measures</string>
+             <string>Choose measures</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -93,8 +108,17 @@
                <property name="enabled">
                 <bool>false</bool>
                </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="toolTip">
+                <string>Save as GuitarPro 5 file (Ctrl + S)</string>
+               </property>
                <property name="text">
                 <string>Save as GP5</string>
+               </property>
+               <property name="shortcut">
+                <string>Ctrl+S</string>
                </property>
                <property name="checkable">
                 <bool>false</bool>
@@ -121,8 +145,17 @@
                <property name="enabled">
                 <bool>false</bool>
                </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="toolTip">
+                <string>Save as MIDI file (Ctrl + M)</string>
+               </property>
                <property name="text">
                 <string>Save as MIDI</string>
+               </property>
+               <property name="shortcut">
+                <string>Ctrl+M</string>
                </property>
               </widget>
              </item>
@@ -134,8 +167,17 @@
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="toolTip">
+             <string>Open in an external editor that you have installed (Ctrl + E)</string>
+            </property>
             <property name="text">
              <string>Open in external editor</string>
+            </property>
+            <property name="shortcut">
+             <string>Ctrl+E</string>
             </property>
            </widget>
           </item>
@@ -147,6 +189,12 @@
     </item>
     <item row="0" column="1">
      <widget class="QPushButton" name="button_select">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Select a file from your computer </string>
+      </property>
       <property name="text">
        <string>Select file</string>
       </property>
@@ -154,6 +202,9 @@
     </item>
     <item row="2" column="0" colspan="2">
      <widget class="QGroupBox" name="groupBox">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
@@ -161,7 +212,7 @@
        </size>
       </property>
       <property name="title">
-       <string>Info about song</string>
+       <string>Song information</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -201,8 +252,32 @@
     </item>
     <item row="1" column="0" colspan="2">
      <widget class="QPushButton" name="button_ok">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Load Song (Enter)</string>
+      </property>
+      <property name="statusTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
+       <string/>
+      </property>
       <property name="text">
        <string>Load Song</string>
+      </property>
+      <property name="shortcut">
+       <string>Return</string>
+      </property>
+      <property name="autoDefault">
+       <bool>false</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -221,31 +296,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>430</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menu_options">
-    <property name="title">
-     <string>Options</string>
-    </property>
-    <widget class="QMenu" name="men_select_lenguage">
-     <property name="title">
-      <string>Select lenguage</string>
-     </property>
-     <addaction name="actionEnglish"/>
-     <addaction name="actionPolish"/>
-    </widget>
-    <addaction name="men_select_lenguage"/>
-    <addaction name="action_open_in_external_editor"/>
-   </widget>
-   <addaction name="menu_options"/>
-  </widget>
   <action name="actionEnglish">
    <property name="text">
     <string>English</string>
@@ -257,6 +307,9 @@
    </property>
   </action>
   <action name="action_open_in_external_editor">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Open in external Editor</string>
    </property>

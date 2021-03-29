@@ -7,19 +7,22 @@ class GPTools:
         self.song = self.__check_file(FILE)
 
     def __check_file(self, FILE):
-        conditions = [
-            True if FILE.endswith('.gp3') else False,
-            True if FILE.endswith('.gp4') else False,
-            True if FILE.endswith('.gp5') else False
-        ]
-        if any(conditions):
-            if FILE.startswith('https'):
-                with urlopen(FILE) as stream:
-                    return guitarpro.parse(stream)
+        try:
+            conditions = [
+                True if FILE.endswith('.gp3') else False,
+                True if FILE.endswith('.gp4') else False,
+                True if FILE.endswith('.gp5') else False
+            ]
+            if any(conditions):
+                if FILE.startswith('https'):
+                    with urlopen(FILE) as stream:
+                        return guitarpro.parse(stream)
+                else:
+                    return guitarpro.parse(FILE)
             else:
-                return guitarpro.parse(FILE)
-        else:
-            raise ValueError
+                raise ValueError
+        except FileNotFoundError:
+            raise FileNotFoundError
 
     def __generate_file_name(self):
         file_name = self.song.title

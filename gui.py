@@ -180,6 +180,7 @@ class MainWindow(QMainWindow):
         self.ui.spinBox_first.setMaximum(self.ui.spinBox_second.value())
 
     def open_in_external_editor(self):
+        self.ui.button_external_editor.setCursor(QCursor(QtCore.Qt.WaitCursor))
         if sys.platform == "win32":
             path = "ste_tmp.gp5"
             opener = "start"
@@ -191,6 +192,7 @@ class MainWindow(QMainWindow):
         
         self.save_file(False, path)
         subprocess.call([opener, path], shell=shell)
+        self.ui.button_external_editor.setCursor(QCursor(QtCore.Qt.ArrowCursor))
 
 def run():
     app = QApplication(sys.argv)

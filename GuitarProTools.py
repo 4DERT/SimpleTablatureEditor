@@ -17,6 +17,8 @@ class GPTools:
                 if FILE.startswith('https'):
                     with urlopen(FILE) as stream:
                         return guitarpro.parse(stream)
+                elif FILE.startswith('file://'):
+                    return guitarpro.parse(FILE[7::])
                 else:
                     return guitarpro.parse(FILE)
             else:

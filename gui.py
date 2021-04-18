@@ -71,7 +71,7 @@ class MainWindow(QMainWindow):
                     self.gp_tools.save_as_gp(fileName)
             self.load_gp_tools(False)
         except:
-            self.create_error_dialog("Try to reload the file ")
+            self.create_error_dialog("Try to reload the file")
             
 
     def load_file(self):

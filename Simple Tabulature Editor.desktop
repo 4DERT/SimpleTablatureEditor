@@ -1,7 +1,6 @@
 [Desktop Entry]
 Comment[en_GB]=
 Comment=
-Encoding=UTF-8
 Exec=simple_tabulature_editor
 GenericName[en_GB]=
 GenericName=
@@ -10,6 +9,7 @@ MimeType=
 Name[en_GB]=Simple Tabulature Editor
 Name=Simple Tabulature Editor
 Path=
+Categories=Audio;
 StartupNotify=true
 Terminal=false
 TerminalOptions=

@@ -8,3 +8,5 @@ build
 dist
 old
 venv
+.directory
+argparse

@@ -83,13 +83,13 @@ class MainWindow(QMainWindow):
             else:
                 self.create_error_dialog("Please selct only one file")
 
-    def set_enabled(self, lock: bool):
-        self.ui.button_gp5.setEnabled(lock)
-        self.ui.button_midi.setEnabled(lock)
-        self.ui.button_external_editor.setEnabled(lock)
-        self.ui.spinBox_first.setEnabled(lock)
-        self.ui.spinBox_second.setEnabled(lock)
-        self.ui.widget_tracks.setEnabled(lock)
+    def set_enabled(self, state: bool):
+        self.ui.button_gp5.setEnabled(state)
+        self.ui.button_midi.setEnabled(state)
+        self.ui.button_external_editor.setEnabled(state)
+        self.ui.spinBox_first.setEnabled(state)
+        self.ui.spinBox_second.setEnabled(state)
+        self.ui.widget_tracks.setEnabled(state)
 
     def load_gp_tools(self, is_new = True):
         try:

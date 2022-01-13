@@ -19,6 +19,12 @@ class MainWindow(QMainWindow):
         self.save_file_name = "Untilted"
         self.max_measure = 1
 
+        self.xdg_open = "start" if sys.platform == "win32" else "xdg-open"
+        self.tmp_path = "ste_tmp.gp5" if sys.platform == "win32" else "/tmp/ste_tmp.gp5"
+
+        self.use_musescore_midi_converter = True
+        self.musescore_path = "/home/kacper/Documents/Python/Simple Tabulature Editor/MuseScore.AppImage"
+
         self.check_boxes = []
 
         self.ui.button_ok.clicked.connect(lambda: self.load_gp_tools(True))
@@ -66,10 +72,16 @@ class MainWindow(QMainWindow):
                 fileName, _ = QFileDialog.getSaveFileName(self,"QFileDialog.getSaveFileName()",f"{self.save_file_name}{ext}",f"{ext_filter}", options=options)
 
             if fileName:
+                QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
                 if isMidi:
-                    self.gp_tools.save_as_midi(fileName, False)
+                    if self.use_musescore_midi_converter:
+                        self.save_file(False, self.tmp_path)
+                        subprocess.run([self.musescore_path, self.tmp_path, '-o', fileName])
+                    else:
+                        self.gp_tools.save_as_midi(fileName, False)
                 else:
                     self.gp_tools.save_as_gp(fileName)
+                QApplication.restoreOverrideCursor()
             self.load_gp_tools(False)
             self.set_enabled(True)
         except:
@@ -183,17 +195,8 @@ class MainWindow(QMainWindow):
 
     def open_in_external_editor(self):
         self.ui.button_external_editor.setCursor(QCursor(QtCore.Qt.WaitCursor))
-        if sys.platform == "win32":
-            path = "ste_tmp.gp5"
-            opener = "start"
-            shell = True
-        else:   #linux
-            path = "/tmp/ste_tmp.gp5"
-            opener = "xdg-open"
-            shell = False
-        
-        self.save_file(False, path)
-        subprocess.call([opener, path], shell=shell)
+        self.save_file(False, self.tmp_path)
+        subprocess.run([self.xdg_open, self.tmp_path])
         self.ui.button_external_editor.setCursor(QCursor(QtCore.Qt.ArrowCursor))
 
 def run():

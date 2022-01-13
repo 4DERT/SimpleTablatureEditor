@@ -1,3 +1,4 @@
+from re import T
 import sys
 import subprocess
 from PyQt5.QtWidgets import QApplication, QMainWindow, QCheckBox, QFileDialog, QMessageBox
@@ -70,6 +71,7 @@ class MainWindow(QMainWindow):
                 else:
                     self.gp_tools.save_as_gp(fileName)
             self.load_gp_tools(False)
+            self.set_enabled(True)
         except:
             self.create_error_dialog("Try to reload the file")
             
@@ -126,7 +128,7 @@ class MainWindow(QMainWindow):
         
         self.ui.centralwidget.setCursor(QCursor(QtCore.Qt.ArrowCursor))
         self.ui.button_ok.setCursor(QCursor(QtCore.Qt.ArrowCursor))
-        self.set_enabled(True)
+        # self.set_enabled(True)
 
 
     def clear_layout(self, layout):

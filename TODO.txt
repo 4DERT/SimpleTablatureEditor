@@ -1,4 +1,0 @@
-Export to Midi using MuseScore
-language support
-Create Appimage or Flatpak
-Fix app name is shown as python

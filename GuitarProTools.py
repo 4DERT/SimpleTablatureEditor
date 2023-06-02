@@ -1,3 +1,5 @@
+import os
+import subprocess
 import guitarpro
 from urllib.request import urlopen
 from GuitarPro_midi import Midi
@@ -106,11 +108,16 @@ class GPTools:
             name = self.__generate_file_name() + '.gp5'
         guitarpro.write(self.song, name)
 
-    def save_as_midi(self, name = None, verbose = False):
+    def save_as_midi(self, name = None, use_mscore = False, mscore_path = "", verbose = False):
         """
         Write song to midi file
         """
-        midi = Midi(self.song, verbose)
         if not name:
             name = self.__generate_file_name() + '.mid'
-        midi.write_to_file(name)
+
+        if use_mscore and os.path.isfile(mscore_path):
+            self.save_as_gp('/tmp/ste_tmp.gp5')
+            subprocess.run([mscore_path, '/tmp/ste_tmp.gp5', '-o', name])
+        else:
+            midi = Midi(self.song, verbose)
+            midi.write_to_file(name)

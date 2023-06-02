@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
         self.tmp_path = "ste_tmp.gp5" if sys.platform == "win32" else "/tmp/ste_tmp.gp5"
 
         self.use_musescore_midi_converter = True
-        self.musescore_path = "/home/kacper/Documents/Python/Simple Tabulature Editor/MuseScore.AppImage"
+        self.musescore_path = "/usr/bin/mscore"
 
         self.check_boxes = []
 
@@ -74,11 +74,7 @@ class MainWindow(QMainWindow):
             if fileName:
                 QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
                 if isMidi:
-                    if self.use_musescore_midi_converter:
-                        self.save_file(False, self.tmp_path)
-                        subprocess.run([self.musescore_path, self.tmp_path, '-o', fileName])
-                    else:
-                        self.gp_tools.save_as_midi(fileName, False)
+                    self.gp_tools.save_as_midi(fileName, True, self.musescore_path, False)
                 else:
                     self.gp_tools.save_as_gp(fileName)
                 QApplication.restoreOverrideCursor()

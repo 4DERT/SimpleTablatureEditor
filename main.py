@@ -24,6 +24,9 @@ if __name__ == "__main__":
     group.add_argument('--gp5', action='store_true', help='Save as gp5 file')
     group.add_argument('--midi', action='store_true', help='Save as MIDI file')
 
+    parser.add_argument('-e', '--use-musescore', action='store_true', required=False, help='Use Musescore to export midi files', default=False)
+    parser.add_argument('--musescore-path', required=False, help='Path to Musescore file, default: /usr/bin/mscore', default='/usr/bin/mscore')
+
     parser.add_argument('--song-info', action='store_true', help='Print info about song')
     parser.add_argument('--debug', action='store_true', help='Print messages to help with debugging (works only with --midi)')
 
@@ -44,6 +47,6 @@ if __name__ == "__main__":
         if args.gp5:
             tool.save_as_gp(args.output)
         if args.midi:
-            tool.save_as_midi(args.output, args.debug)
+            tool.save_as_midi(args.output, args.use_musescore, args.musescore_path, args.debug)
     else:
         gui.run()

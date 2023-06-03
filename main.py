@@ -3,7 +3,8 @@ import argparse
 from GuitarProTools import GPTools
 import gui
 
-if __name__ == "__main__":
+
+def main():
     parser = argparse.ArgumentParser(description='Edit and convert GuitarPro files. Run without flags to enable gui')
 
     parser.add_argument('-i', '--input',
@@ -50,3 +51,7 @@ if __name__ == "__main__":
             tool.save_as_midi(args.output, args.use_musescore, args.musescore_path, args.debug)
     else:
         gui.run()
+
+
+if __name__ == "__main__":
+    main()

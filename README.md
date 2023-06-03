@@ -31,11 +31,15 @@ There is also a CLI, with flags:
 git clone https://github.com/4DERT/SimpleTablatureEditor
 cd SimpleTablatureEditor
 
-# install python dependencies
-pip install -r requirements.txt
+# build
+python setup.py bdist_wheel
+
+# install
+cd dist
+pip install ste-1.0-py3-none-any.whl
 
 # run program
-python main.py
+ste
 ```
 
 ## Acknowledgments
